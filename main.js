@@ -3,10 +3,35 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
+const myHearts = document.querySelectorAll('li.like');
 
+myHearts.forEach((item) => {
+  item.addEventListener('click', clickEvent)
+});
 
-
-
+function clickEvent(myTarget) {
+  mimicServerCall()
+  .then((response) => {
+    switch (myTarget.target.innerHTML) {
+      case FULL_HEART:
+        myTarget.target.innerHTML = EMPTY_HEART
+        myTarget.target.className = "like-glyph"
+        break;
+      case EMPTY_HEART:
+        myTarget.target.innerHTML = FULL_HEART
+        myTarget.target.className = "like-glyph activated-heart"
+        break;
+    }
+  })
+  .catch((response) => {
+    const errorDiv = document.querySelector('div.hidden')
+    errorDiv.innerHTML = response;
+    errorDiv.className = ''
+    setTimeout(() => {
+      errorDiv.className = 'hidden'
+    }, 3000)
+  })
+}
 //------------------------------------------------------------------------------
 // Don't change the code below: this function mocks the server response
 //------------------------------------------------------------------------------
